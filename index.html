@@ -2,343 +2,389 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flash Break X9 - Premium Safety Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Flash Break X9 - Secure Support Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Poppins:wght@700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap');
 
         :root {
-            --brand-blue: #007aff;
-            --brand-green: #34c759;
-            --brand-red: #ff3b30;
-            --bg-color: #f2f4f7;
-            --card-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --primary: #007aff;
+            --success: #34c759;
+            --danger: #ff3b30;
+            --warning: #ffcc00;
+            --bg: #f4f7f9;
+            --text: #1c1e21;
+            --shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body { 
             margin: 0; font-family: 'Hind Siliguri', sans-serif; 
-            background-color: var(--bg-color); color: #1c1e21;
+            background-color: var(--bg); color: var(--text);
+            line-height: 1.6;
         }
 
-        /* 3s Smooth Loader */
+        /* --- Loader --- */
         #loader {
             position: fixed; inset: 0; background: #fff;
-            display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10000;
         }
-        .loading-spinner {
-            width: 45px; height: 45px; border: 4px solid #f3f3f3;
-            border-top: 4px solid var(--brand-blue); border-radius: 50%;
+        .spinner {
+            width: 40px; height: 40px; border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary); border-radius: 50%;
             animation: spin 1s linear infinite;
         }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* Notification Ticker */
+        /* --- Header & Logo --- */
+        header { 
+            background: #fff; padding: 15px; text-align: center; 
+            border-bottom: 1px solid #e0e0e0; position: sticky; top: 0; z-index: 1000;
+        }
+        .logo { 
+            font-family: 'Poppins'; font-size: 1.6rem; font-weight: 800;
+            background: linear-gradient(90deg, #007aff, #ff3b30, #34c759, #007aff);
+            background-size: 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: flow 3s linear infinite; margin: 0;
+        }
+        @keyframes flow { 0% { background-position: 0%; } 100% { background-position: 200%; } }
+
+        /* --- Ticker --- */
         .ticker {
-            background: #fff; border-bottom: 1px solid #ddd;
-            padding: 8px 0; font-size: 0.8rem; font-weight: 700; color: var(--brand-blue);
-            overflow: hidden; white-space: nowrap;
+            background: #2c3e50; color: #fff; padding: 6px; font-size: 0.8rem;
+            overflow: hidden; white-space: nowrap; font-weight: 500;
         }
-        .ticker-wrap { display: inline-block; animation: ticker 25s linear infinite; }
-        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .ticker-text { display: inline-block; animation: scroll 25s linear infinite; }
+        @keyframes scroll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        header { text-align: center; padding: 25px 20px; background: #fff; border-bottom: 1px solid #e5e5e5; }
-        .logo { font-family: 'Poppins'; font-size: 2.2rem; font-weight: 800; color: var(--brand-blue); margin: 0; }
-        
-        .container { max-width: 450px; margin: auto; padding: 15px 15px 60px; }
+        .container { max-width: 480px; margin: auto; padding: 15px; }
 
-        /* Legal Notice */
-        .legal-notice {
-            background: #fff; border-left: 5px solid var(--brand-red);
-            padding: 15px; border-radius: 15px; margin-bottom: 20px;
-            font-size: 0.85rem; color: #444; box-shadow: var(--card-shadow);
+        .card { 
+            background: #fff; border-radius: 16px; padding: 18px; 
+            box-shadow: var(--shadow); margin-bottom: 15px; border: 1px solid #efefef;
         }
+        .safe-card { border-left: 5px solid var(--danger); }
+        .safe-card h4 { margin: 0 0 8px; color: var(--danger); display: flex; align-items: center; gap: 8px; font-size: 1rem; }
+        .safe-card p { margin: 0; font-size: 0.85rem; color: #555; text-align: justify; }
 
-        /* Support & Help Buttons */
-        .support-card {
-            background: linear-gradient(135deg, #007aff, #0051af);
-            padding: 18px; border-radius: 20px; display: flex; align-items: center;
-            justify-content: space-between; color: #fff; text-decoration: none;
-            margin-bottom: 12px; box-shadow: 0 10px 25px rgba(0, 122, 255, 0.3);
+        /* --- Buttons --- */
+        .btn {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 18px; border-radius: 14px; text-decoration: none;
+            color: var(--text); font-weight: 600; font-size: 0.95rem;
+            margin-bottom: 12px; background: #fff; border: 1px solid #ddd;
+            transition: 0.2s; cursor: pointer;
         }
+        .btn:active { transform: scale(0.98); background: #f9f9f9; }
+        .btn i { font-size: 1.1rem; color: var(--primary); }
 
-        .how-it-works-btn {
-            background: #fff; padding: 15px; border-radius: 18px; display: flex; align-items: center;
-            justify-content: center; gap: 10px; color: #1c1e21; text-decoration: none;
-            margin-bottom: 12px; font-size: 0.9rem; font-weight: 700; border: 1px solid #e0e0e0;
-            cursor: pointer;
+        .support-btn { 
+            background: linear-gradient(135deg, #1877f2, #0056b3); 
+            color: #fff; border: none; box-shadow: 0 4px 12px rgba(24, 119, 242, 0.2);
         }
+        .support-btn i { color: #fff; font-size: 1.4rem; }
 
-        /* New Status Check Button - Premium Style */
-        .status-btn {
-            background: #fff; padding: 12px; border-radius: 15px; display: flex; align-items: center;
-            justify-content: center; gap: 8px; color: var(--brand-green); text-decoration: none;
-            margin-bottom: 20px; font-size: 0.85rem; font-weight: 800; border: 1px solid var(--brand-green);
-            cursor: pointer; transition: 0.3s;
+        .status-btn { border: 1.5px solid var(--success); color: var(--success); }
+
+        /* --- Server Meter --- */
+        .meter-box { text-align: center; padding: 12px; }
+        .meter-bg { height: 8px; background: #eee; border-radius: 10px; margin-top: 8px; overflow: hidden; }
+        .meter-fill { height: 100%; width: 98%; background: var(--success); animation: load 2s ease-in-out; }
+        @keyframes load { from { width: 0; } to { width: 98%; } }
+
+        /* --- Grid --- */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 10px 0 20px; }
+        .grid-box {
+            background: #fff; padding: 20px 10px; border-radius: 18px; text-align: center;
+            box-shadow: var(--shadow); cursor: pointer; border: 1px solid #eee;
         }
+        .grid-box i { font-size: 1.8rem; margin-bottom: 8px; display: block; }
 
-        /* Health Meter */
-        .health-card { background: #fff; padding: 18px; border-radius: 22px; margin-bottom: 20px; box-shadow: var(--card-shadow); }
-        .health-bar { height: 8px; background: #eee; border-radius: 10px; margin-top: 10px; overflow: hidden; }
-        .health-fill { height: 100%; width: 98%; background: var(--brand-green); animation: loadBar 2s ease-out; }
-        @keyframes loadBar { from { width: 0; } to { width: 98%; } }
-
-        /* Action Buttons */
-        .action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
-        .action-box { 
-            background: #fff; padding: 25px 15px; border-radius: 22px; text-align: center;
-            box-shadow: var(--card-shadow); cursor: pointer;
+        /* --- Popups --- */
+        .overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+            display: none; justify-content: center; align-items: center;
+            z-index: 5000; backdrop-filter: blur(6px); padding: 20px;
         }
-
-        /* History Card */
-        .history-card {
-            background: #fff; border-radius: 20px; padding: 15px; margin-bottom: 12px;
-            display: flex; align-items: center; gap: 15px; box-shadow: var(--card-shadow);
-            cursor: pointer;
+        .popup {
+            background: #fff; border-radius: 20px; width: 100%; max-width: 380px;
+            overflow: hidden; animation: zoom 0.3s ease;
         }
-        .history-icon {
-            width: 45px; height: 45px; border-radius: 50%; background: #fff0f0;
-            color: var(--brand-red); display: grid; place-items: center; 
-            font-size: 1.2rem; border: 1px solid #ffdcdc;
-        }
+        @keyframes zoom { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-        /* Overlays & Popups */
-        .overlay { 
-            position: fixed; inset: 0; background: rgba(0,0,0,0.7); 
-            display: none; justify-content: center; align-items: center; 
-            z-index: 2000; backdrop-filter: blur(10px);
-        }
-        .popup-box { 
-            background: #fff; border-radius: 28px; width: 90%; max-width: 380px; 
-            overflow: hidden; animation: popAnim 0.4s ease-out;
-        }
-        @keyframes popAnim { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .popup-header { background: #f8f9fa; padding: 15px; text-align: center; border-bottom: 1px solid #eee; font-weight: 700; }
+        .popup-body { padding: 20px; font-size: 0.9rem; }
 
-        .popup-header { background: #f8f9fa; padding: 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #eee; }
-        .popup-body { padding: 20px; text-align: left; }
-        
-        /* Step Style */
-        .step-item { display: flex; gap: 15px; margin-bottom: 15px; align-items: flex-start; }
-        .step-num { width: 28px; height: 28px; background: var(--brand-blue); color: #fff; border-radius: 50%; display: grid; place-items: center; font-size: 0.8rem; font-weight: 800; flex-shrink: 0; }
-        .step-text b { display: block; color: #1c1e21; font-size: 0.95rem; }
-        .step-text p { margin: 2px 0 0; font-size: 0.8rem; color: #666; }
-
-        .info-row { margin-bottom: 12px; border-bottom: 1px solid #f2f2f2; padding-bottom: 8px; }
-        .info-row label { color: #8e8e93; font-size: 0.75rem; font-weight: 700; display: block; }
-        .info-row b { color: #1c1e21; font-size: 0.95rem; word-break: break-all; }
-
-        /* Form Controls */
+        /* --- Form --- */
         #form-screen { display: none; }
-        .input-group { margin-bottom: 12px; }
-        .input-group input, .input-group textarea {
-            width: 100%; padding: 15px; border-radius: 15px; border: 1px solid #ddd;
-            background: #f9f9fb; font-family: inherit; box-sizing: border-box;
+        .field { margin-bottom: 12px; }
+        .field label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 5px; color: #666; }
+        .field input, .field textarea {
+            width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ddd;
+            background: #fdfdfd; font-size: 0.95rem; font-family: inherit;
         }
-        .btn-main { width: 100%; padding: 18px; background: var(--brand-blue); color: #fff; border: none; border-radius: 18px; font-weight: 700; cursor: pointer; }
+        .submit-btn { 
+            width: 100%; padding: 15px; background: var(--primary); color: #fff; 
+            border: none; border-radius: 12px; font-weight: 700; font-size: 1rem; 
+            cursor: pointer; margin-top: 10px; 
+        }
 
-        footer { text-align: center; padding: 25px; color: #8a8d91; font-size: 0.8rem; }
+        /* --- New History Design --- */
+        .history-item {
+            background: #fff; padding: 15px; border-radius: 15px; margin-bottom: 12px;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03); border-left: 5px solid var(--primary);
+            cursor: pointer; transition: 0.3s; animation: slideIn 0.5s ease;
+        }
+        .history-item:hover { transform: translateY(-3px); box-shadow: 0 6px 15px rgba(0,0,0,0.08); }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+        .status-badge { padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; background: #eef6ff; color: var(--primary); }
+
+        .details-popup-content {
+            background: #fff; width: 92%; max-width: 400px; border-radius: 25px;
+            padding: 25px; position: relative; animation: popEffect 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        @keyframes popEffect { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .detail-row { margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed #eee; text-align: left; }
+        .detail-row label { display: block; font-size: 0.75rem; color: #999; font-weight: 600; }
+        .detail-row span { font-size: 0.9rem; color: #333; font-weight: 700; word-break: break-all; }
+
+        footer { text-align: center; padding: 30px; color: #999; font-size: 0.75rem; font-weight: 600; }
     </style>
 </head>
 <body>
 
     <div id="loader">
-        <div class="loading-spinner"></div>
-        <h2 style="margin-top:15px; color: var(--brand-blue);">FLASH BREAK</h2>
+        <div class="spinner"></div>
+        <h4 style="margin-top:15px; color: var(--primary); font-family: 'Poppins'; letter-spacing: 1px;">FLASH BREAK X9</h4>
     </div>
 
     <div class="ticker">
-        <div class="ticker-wrap">📢 জরুরি নোটিশ: সকল রিপোর্ট গোপনীয়তার সাথে ফেসবুক কর্তৃপক্ষের কাছে পাঠানো হয়।</div>
+        <div class="ticker-text">নোটিশ: আমাদের সেবার পরিধি শুধুমাত্র আপনার অভিযোগগুলো ফেসবুকের কমিউনিটি স্ট্যান্ডার্ড অনুযায়ী গুছিয়ে সঠিক কর্তৃপক্ষের কাছে সাবমিট করা পর্যন্ত সীমাবদ্ধ। চূড়ান্ত সিদ্ধান্ত ফেসবুকের অভ্যন্তরীণ রিভিউ টিমের ওপর নির্ভরশীল। আমরা কোনো আইডি চিরতরে মুছে ফেলার ভুয়া প্রতিশ্রুতি প্রদান করি না।</div>
     </div>
 
-    <header><div class="logo">FLASH BREAK X9</div></header>
+    <header><div class="logo">FLASHK X9</div></header>
 
     <div class="container">
-        
-        <div class="legal-notice">
-            <b style="color:var(--brand-red)"><i class="fas fa-shield-alt"></i> আইনি ডিসক্লেমার:</b><br>
-            আমরা সরাসরি কোনো ব্যক্তিগত তথ্য সংরক্ষণ করি না এবং সরাসরি আইডি ডিলিট করার ক্ষমতা রাখি না।
-        </div>
-
         <div id="home-screen">
-            <a href="https://www.facebook.com/FlashBreakX9" target="_blank" class="support-card">
+            <div class="card safe-card">
+                <h4><i class="fas fa-user-shield"></i> আইনি ও নিরাপত্তা নির্দেশিকা</h4>
+                <p>
+                    আমাদের লক্ষ্য ডিজিটাল নিরাপত্তা নিশ্চিত করা। আমরা কোনো অ্যাকাউন্ট সরাসরি বন্ধ করি না, বরং ফেসবুকের নিয়ম মেনে আপনার অভিযোগটি সঠিক জায়গায় পৌঁছে দিতে কাজ করি। কোনো প্রকার অবৈধ দাবি আমাদের সাথে করবেন না।
+                </p>
+            </div>
+
+            <a href="https://www.facebook.com/FlashBreakX9" target="_blank" class="btn support-btn">
                 <div>
-                    <h4 style="margin:0">অ্যাডমিন সাপোর্ট</h4>
-                    <p style="margin:2px 0 0; font-size:0.75rem; opacity:0.9;">সরাসরি ফেসবুকে কথা বলুন।</p>
+                    <div style="font-size: 1.1rem;">অ্যাডমিন সহায়তা</div>
+                    <div style="font-size: 0.75rem; opacity: 0.9; font-weight: 400;">সরাসরি মেসেঞ্জারে কথা বলুন</div>
                 </div>
-                <div style="font-size:1.4rem"><i class="fas fa-headset"></i></div>
+                <i class="fab fa-facebook-messenger"></i>
             </a>
 
-            <div class="how-it-works-btn" onclick="openPopup('how-it-works-popup')">
-                <i class="fas fa-magic" style="color:var(--brand-blue)"></i> সিস্টেম কিভাবে কাজ করে দেখুন
+            <div class="btn" onclick="openPopup('process-popup')">
+                <span><i class="fas fa-info-circle"></i> এটি কিভাবে কাজ করে?</span>
+                <i class="fas fa-chevron-right" style="color:#ccc"></i>
             </div>
 
-            <div class="status-btn" onclick="openPopup('status-check-popup')">
-                <i class="fas fa-search"></i> রিপোর্ট স্ট্যাটাস চেক করুন
+            <div class="btn status-btn" onclick="openPopup('status-popup')">
+                <span><i class="fas fa-sync-alt"></i> রিপোর্ট ট্র্যাকিং স্ট্যাটাস</span>
+                <i class="fas fa-search"></i>
             </div>
 
-            <div class="health-card">
-                <div style="display:flex; justify-content:space-between; font-size:0.8rem; font-weight:700;">
-                    <span>সার্ভার হেলথ</span>
-                    <span style="color:var(--brand-green);">৯৮% সচল</span>
+            <div class="card meter-box">
+                <div style="display:flex; justify-content:space-between; font-size: 0.8rem; font-weight: 700;">
+                    <span>সিস্টেম সচলতা</span>
+                    <span style="color:var(--success);">৯৮% (অপ্টিমাইজড)</span>
                 </div>
-                <div class="health-bar"><div class="health-fill"></div></div>
+                <div class="meter-bg"><div class="meter-fill"></div></div>
             </div>
 
-            <div class="action-row">
-                <div class="action-box" onclick="openForm('Facebook')">
-                    <i class="fab fa-facebook" style="color: #1877f2; font-size: 2rem;"></i>
-                    <div style="font-weight: 800; margin-top:8px;">Facebook</div>
+            <div class="grid">
+                <div class="grid-box" onclick="openForm('Facebook')">
+                    <i class="fab fa-facebook" style="color: #1877f2;"></i>
+                    <div style="font-weight:700;">Facebook</div>
                 </div>
-                <div class="action-box" onclick="openForm('Others')">
-                    <i class="fas fa-globe" style="color: #333; font-size: 2rem;"></i>
-                    <div style="font-weight: 800; margin-top:8px;">Others</div>
+                <div class="grid-box" onclick="openForm('Others')">
+                    <i class="fas fa-globe" style="color: #444;"></i>
+                    <div style="font-weight:700;">Others</div>
                 </div>
             </div>
 
-            <h3 style="margin: 20px 0 15px; font-size: 1.1rem; font-weight: 800;"><i class="fas fa-history"></i> রিপোর্ট হিস্ট্রি</h3>
-            <div id="history-list"></div>
+            <h4 style="margin: 0 0 12px;"><i class="fas fa-history"></i> সাম্প্রতিক রেকর্ডসমূহ</h4>
+            <div id="hist-list"></div>
         </div>
 
         <div id="form-screen">
-            <div onclick="goBack()" style="color:var(--brand-blue); font-weight:700; cursor:pointer; margin-bottom:15px;"><i class="fas fa-arrow-left"></i> ফিরে যান</div>
-            <div style="background:#fff; padding:25px; border-radius:25px;">
-                <h3 style="margin: 0 0 20px;">রিপোর্ট ফরম</h3>
+            <div onclick="goBack()" style="color:var(--primary); font-weight:700; cursor:pointer; margin-bottom:15px; font-size: 0.9rem;">
+                <i class="fas fa-arrow-left"></i> ফিরে যান
+            </div>
+            <div class="card">
+                <h3 style="margin-top:0; text-align:center; font-size: 1.2rem;">সহায়তা ফরম</h3>
                 <form id="reportForm">
-                    <div class="input-group"><input type="text" id="senderName" placeholder="আপনার নাম" required></div>
-                    <div class="input-group"><input type="email" id="senderEmail" placeholder="আপনার ইমেইল আইডি" required></div>
-                    <div class="input-group"><input type="text" id="targetName" placeholder="টার্গেট নাম" required></div>
-                    <div class="input-group"><input type="url" id="targetLink" placeholder="আইডি লিঙ্ক" required></div>
-                    <div class="input-group"><textarea id="reportReason" placeholder="অ্যাডিশনাল বিস্তারিত তথ্য..." rows="3"></textarea></div>
-                    <div class="input-group">
-                        <small style="color:#888">স্ক্রিনশট দিন:</small><br>
-                        <input type="file" id="proofImg" accept="image/*" required>
+                    <div class="field">
+                        <label>আপনার নাম:</label>
+                        <input type="text" id="uName" placeholder="উদা: আরিয়ান খান" required>
                     </div>
-                    <div style="font-size: 0.75rem; color: #888; margin-bottom: 12px; line-height: 1.4;">
-                        <i class="fas fa-lock"></i> <b>প্রাইভেসি নোট:</b> আপনার ইমেইল ও নাম শুধুমাত্র যোগাযোগের জন্য ব্যবহৃত হবে। আমরা তথ্য তৃতীয় পক্ষকে দেই না।
+                    <div class="field">
+                        <label>যোগাযোগের ইমেইল:</label>
+                        <input type="email" id="uEmail" placeholder="উদা: abc@mail.com" required>
                     </div>
-                    <button type="submit" id="btnSend" class="btn-main">রিপোর্ট সাবমিট করুন</button>
+                    <div class="field">
+                        <label>টার্গেট আইডির নাম:</label>
+                        <input type="text" id="tName" placeholder="অভিযুক্ত আইডির নাম" required>
+                    </div>
+                    <div class="field">
+                        <label>টার্গেট আইডি লিঙ্ক:</label>
+                        <input type="url" id="tLink" placeholder="https://..." required>
+                    </div>
+                    <div class="field">
+                        <label>অভিযোগের বিবরণ:</label>
+                        <textarea id="tReason" rows="3" placeholder="বিস্তারিত লিখুন..."></textarea>
+                    </div>
+                    <div class="field">
+                        <label>স্ক্রিনশট আপলোড (প্রমাণ):</label>
+                        <input type="file" id="tFile" accept="image/*" required style="border:none; padding:0;">
+                    </div>
+                    <button type="submit" id="subBtn" class="submit-btn">সাবমিট করুন</button>
                 </form>
             </div>
         </div>
     </div>
 
-    <div id="how-it-works-popup" class="overlay" onclick="closePopup('how-it-works-popup')">
-        <div class="popup-box" onclick="event.stopPropagation()">
-            <div class="popup-header">
-                <div style="width:50px; height:50px; background:#eef6ff; border-radius:50%; display:grid; place-items:center; color:var(--brand-blue);"><i class="fas fa-lightbulb"></i></div>
-                <div><b>কাজের পদ্ধতি</b><br><small>৪টি সহজ ধাপ</small></div>
-            </div>
+    <div id="details-overlay" class="overlay" onclick="closeDetails()">
+        <div class="details-popup-content" onclick="event.stopPropagation()">
+            <h3 style="margin-top: 0; text-align: center; color: var(--primary); font-size: 1.2rem;">রিপোর্ট ডিটেইলস</h3>
+            <div id="details-data"></div>
+            <button onclick="closeDetails()" class="submit-btn" style="margin-top: 15px; background: #f0f2f5; color: #333; font-size: 0.9rem; border-radius: 12px;">বন্ধ করুন</button>
+        </div>
+    </div>
+
+    <div id="process-popup" class="overlay" onclick="closePopup('process-popup')">
+        <div class="popup" onclick="event.stopPropagation()">
+            <div class="popup-header">কার্যপদ্ধতি</div>
             <div class="popup-body">
-                <div class="step-item"><div class="step-num">১</div><div class="step-text"><b>তথ্য পূরণ করুন</b><p>সঠিক লিঙ্ক ও নাম আমাদের ফরমে দিন।</p></div></div>
-                <div class="step-item"><div class="step-num">২</div><div class="step-text"><b>প্রমাণ আপলোড</b><p>অশ্লীল বিষয়ের স্ক্রিনশট আমাদের পাঠান।</p></div></div>
-                <div class="step-item"><div class="step-num">৩</div><div class="step-text"><b>পর্যালোচনা</b><p>আমাদের টিম তথ্যগুলো ফেসবুকের গাইডলাইন অনুযায়ী সাজাবে।</p></div></div>
-                <div class="step-item"><div class="step-num">৪</div><div class="step-text"><b>রিপোর্ট সাবমিট</b><p>সঠিক পদ্ধতিতে ফেসবুক টিমের কাছে রিপোর্ট পাঠানো হবে।</p></div></div>
+                <p><b>1. আপনার সঠিক পরিচয়:</b> সঠিক নাম এবং সচল ইমেইল অ্যাড্রেস দিন যাতে যোগাযোগ করা যায়।</p>
+                <p><b>2. অভিযুক্ত আইডির তথ্য:</b> আইডির হুবহু নাম এবং সঠিক লিঙ্ক (URL) দিন। লিঙ্ক ভুল হলে রিপোর্ট বাতিল হবে।</p>
+                <p><b>3. অভিযোগের বিবরণ:</b> কেন বা কীভাবে নিয়ম ভঙ্গ করছে তা সংক্ষেপে এবং স্পষ্টভাবে লিখুন।</p>
+                <p><b>4. ছবি আপলোড:</b> নিয়ম ভঙ্গের পরিষ্কার স্ক্রিনশট আপলোড করুন। প্রমাণ ছাড়া রিপোর্ট গৃহীত হবে না।</p>
             </div>
-            <button onclick="closePopup('how-it-works-popup')" style="width:100%; padding:20px; border:none; background:#f0f2f5; font-weight:800; cursor:pointer;">বন্ধ করুন</button>
+            <button onclick="closePopup('process-popup')" class="submit-btn" style="border-radius:0;">বুঝেছি</button>
         </div>
     </div>
 
-    <div id="status-check-popup" class="overlay" onclick="closePopup('status-check-popup')">
-        <div class="popup-box" onclick="event.stopPropagation()">
-            <div class="popup-header">
-                <div style="width:50px; height:50px; background:#f0fff4; border-radius:50%; display:grid; place-items:center; color:var(--brand-green);"><i class="fas fa-search-location"></i></div>
-                <div><b>রিপোর্ট স্ট্যাটাস</b><br><small>লাইভ আপডেট</small></div>
+    <div id="status-popup" class="overlay" onclick="closePopup('status-popup')">
+        <div class="popup" onclick="event.stopPropagation()">
+            <div class="popup-header">রিপোর্ট স্ট্যাটাস</div>
+            <div class="popup-body" style="text-align:center;">
+                <i class="fas fa-hourglass-half" style="font-size: 3rem; color: var(--warning); margin-bottom: 15px;"></i>
+                <p>সতর্কবার্তা: আমরা আপনার হয়ে ফেসবুকের অফিসিয়াল চ্যানেলে রিপোর্টটি সাবমিট করার প্রক্রিয়া শুরু করেছি। ডাটাবেস আপডেট এবং রিপোর্ট পর্যালোচনায় ১ থেকে ৩ কার্যদিবস সময় লাগতে পারে।</p>
             </div>
-            <div class="popup-body" style="text-align: center; padding: 30px 20px;">
-                <i class="fas fa-clock" style="font-size: 3rem; color: #ffcc00; margin-bottom: 15px;"></i>
-                <p style="font-size: 0.95rem; line-height: 1.6; color: #444;">আপনার অভিযোগটি আমাদের সিস্টেমে সংরক্ষিত আছে। আমাদের টিম তথ্যগুলো যাচাই করে ফেসবুকের অফিসিয়াল Report Tool-এর মাধ্যমে সাবমিট করার প্রসেসে আছে। ফেসবুক কর্তৃপক্ষ তাদের পলিসি অনুযায়ী চূড়ান্ত সিদ্ধান্ত নেবে। আমরা শুধুমাত্র আপনার হয়ে অভিযোগটি পৌঁছে দিচ্ছি।<b>.......</b> </p>
-            </div>
-            <button onclick="closePopup('status-check-popup')" style="width:100%; padding:20px; border:none; background:#f0f2f5; font-weight:800; cursor:pointer;">ঠিক আছে</button>
+            <button onclick="closePopup('status-popup')" class="submit-btn" style="border-radius:0;">বন্ধ করুন</button>
         </div>
     </div>
 
-    <div id="details-overlay" class="overlay" onclick="closePopup('details-overlay')">
-        <div class="popup-box" onclick="event.stopPropagation()">
-            <div class="popup-header"><b>রিপোর্ট ডিটেইলস</b></div>
-            <div class="popup-body" id="details-content"></div>
-            <button onclick="closePopup('details-overlay')" style="width:100%; padding:20px; border:none; background:#f0f2f5; font-weight:800; cursor:pointer;">বন্ধ করুন</button>
-        </div>
-    </div>
-
-    <div id="success-popup" class="overlay">
-        <div class="popup-box" style="padding:40px 20px; text-align:center;">
-            <i class="fas fa-check-circle" style="font-size:4rem; color:var(--brand-green);"></i>
-            <h2>সফলভাবে পাঠানো হয়েছে!</h2>
-            <button class="btn-main" onclick="location.reload()">ঠিক আছে</button>
-        </div>
-    </div>
-
-    <footer>Flash Break X9 • All Rights Reserved</footer>
+    <footer>FLASH BREAK X9 • © 2026 OFFICIAL</footer>
 
     <script>
-        window.onload = () => {
-            setTimeout(() => { document.getElementById('loader').style.display = 'none'; renderHistory(); }, 3000);
-        };
+        window.addEventListener('load', () => {
+            setTimeout(() => { 
+                document.getElementById('loader').style.display = 'none'; 
+                renderHistory();
+            }, 3000);
+        });
 
         function openPopup(id) { document.getElementById(id).style.display = 'flex'; }
         function closePopup(id) { document.getElementById(id).style.display = 'none'; }
+        
+        let platType = "";
+        function openForm(type) {
+            platType = type;
+            document.getElementById('home-screen').style.display = 'none';
+            document.getElementById('form-screen').style.display = 'block';
+            window.scrollTo(0,0);
+        }
+        function goBack() {
+            document.getElementById('home-screen').style.display = 'block';
+            document.getElementById('form-screen').style.display = 'none';
+        }
 
+        // --- Improved Render History ---
         function renderHistory() {
-            const reports = JSON.parse(localStorage.getItem('user_reports')) || [];
-            const container = document.getElementById('history-list');
-            if(reports.length === 0) { container.innerHTML = "<p style='text-align:center; color:#888;'>কোনো হিস্ট্রি নেই</p>"; return; }
-            container.innerHTML = reports.reverse().map((item, index) => `
-                <div class="history-card" onclick="viewReport(${reports.length - 1 - index})">
-                    <div class="history-icon"><i class="fas fa-exclamation"></i></div>
-                    <div style="flex:1">
-                        <h4 style="margin:0">${item.target}</h4>
-                        <small style="color:#888">${item.date}</small>
+            const data = JSON.parse(localStorage.getItem('fb_x9_records')) || [];
+            const container = document.getElementById('hist-list');
+            if(data.length === 0) { 
+                container.innerHTML = "<p style='text-align:center; color:#888; font-size:0.8rem;'>কোনো রেকর্ড নেই</p>"; 
+                return; 
+            }
+            container.innerHTML = data.reverse().map((item, index) => `
+                <div class="history-item" onclick="showDetails(${data.length - 1 - index})">
+                    <div class="history-info">
+                        <b style="display:block;">${item.target}</b>
+                        <small style="color:#888; font-size:0.75rem;">${item.date}</small>
                     </div>
-                    <div style="color:var(--brand-blue); font-size:0.7rem; font-weight:800;">Reviewing</div>
+                    <div class="status-badge">Processing</div>
                 </div>
             `).join('');
         }
 
-        function viewReport(i) {
-            const reports = JSON.parse(localStorage.getItem('user_reports'));
-            const data = reports[i];
-            document.getElementById('details-content').innerHTML = `
-                <div class="info-row"><label>রিপোর্টার:</label><b>${data.reporter}</b></div>
-                <div class="info-row"><label>টার্গেট:</label><b>${data.target}</b></div>
-                <div class="info-row"><label>বিস্তারিত তথ্য:</label><b>${data.reason || "নাই"}</b></div>
-                <div class="info-row"><label>সময়:</label><b>${data.date}</b></div>
+        function showDetails(index) {
+            const data = JSON.parse(localStorage.getItem('fb_x9_records'));
+            const item = data[index];
+            const detailsData = document.getElementById('details-data');
+
+            detailsData.innerHTML = `
+                <div class="detail-row"><label>রিপোর্টার নাম</label><span>${item.name}</span></div>
+                <div class="detail-row"><label>টার্গেট নাম</label><span>${item.target}</span></div>
+                <div class="detail-row"><label>লিঙ্ক</label><span style="color:var(--primary);">${item.link}</span></div>
+                <div class="detail-row"><label>অভিযোগ</label><span>${item.reason || 'উল্লেখ নেই'}</span></div>
+                <div class="detail-row"><label>প্ল্যাটফর্ম</label><span>${item.platform}</span></div>
+                <div class="detail-row"><label>তারিখ</label><span>${item.date}</span></div>
             `;
-            openPopup('details-overlay');
+            document.getElementById('details-overlay').style.display = 'flex';
         }
 
-        let currentType = "";
-        function openForm(type) { currentType = type; document.getElementById('home-screen').style.display = 'none'; document.getElementById('form-screen').style.display = 'block'; }
-        function goBack() { document.getElementById('home-screen').style.display = 'block'; document.getElementById('form-screen').style.display = 'none'; }
+        function closeDetails() {
+            document.getElementById('details-overlay').style.display = 'none';
+        }
 
-        const TOKEN = "8547821138:AAHYUb5igIK8PPaPgOn2vHGrz7uh0150ps4";
+        const BOT_TOKEN = "8547821138:AAHYUb5igIK8PPaPgOn2vHGrz7uh0150ps4";
         const CHAT_ID = "-1003479197659";
 
         document.getElementById('reportForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('btnSend');
-            btn.disabled = true; btn.innerText = "পাঠানো হচ্ছে...";
+            const btn = document.getElementById('subBtn');
+            btn.disabled = true; btn.innerText = "প্রসেসিং হচ্ছে...";
 
-            const name = document.getElementById('senderName').value;
-            const email = document.getElementById('senderEmail').value;
-            const target = document.getElementById('targetName').value;
-            const link = document.getElementById('targetLink').value;
-            const reason = document.getElementById('reportReason').value;
+            const name = document.getElementById('uName').value;
+            const target = document.getElementById('tName').value;
+            const link = document.getElementById('tLink').value;
+            const reason = document.getElementById('tReason').value;
 
-            const formData = new FormData();
-            formData.append('chat_id', CHAT_ID);
-            formData.append('photo', document.getElementById('proofImg').files[0]);
-            formData.append('caption', `🚨 **নতুন রিপোর্ট**\n👤 রিপোর্টার: ${name}\n📧 ইমেইল: ${email}\n🎯 টার্গেট: ${target}\n🔗 লিঙ্ক: ${link}\n📝 বিস্তারিত: ${reason}`);
+            const fd = new FormData();
+            fd.append('chat_id', CHAT_ID);
+            fd.append('photo', document.getElementById('tFile').files[0]);
+            fd.append('caption', `✅ **নতুন সহায়তা অনুরোধ**\n\n👤 ইউজার: ${name}\n🎯 টার্গেট আইডি: ${target}\n🔗 লিঙ্ক: ${link}\n📝 বিস্তারিত: ${reason}\n📱 প্ল্যাটফর্ম: ${platType}`);
 
             try {
-                const res = await fetch(`https://api.telegram.org/bot${TOKEN}/sendPhoto`, { method: 'POST', body: formData });
+                const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
                 if(res.ok) {
-                    const localData = JSON.parse(localStorage.getItem('user_reports')) || [];
-                    localData.push({ platform: currentType, reporter: name, email: email, target: target, reason: reason, date: new Date().toLocaleString('bn-BD') });
-                    localStorage.setItem('user_reports', JSON.stringify(localData));
-                    openPopup('success-popup');
+                    const local = JSON.parse(localStorage.getItem('fb_x9_records')) || [];
+                    local.push({ 
+                        name: name,
+                        target: target, 
+                        link: link,
+                        reason: reason,
+                        platform: platType,
+                        date: new Date().toLocaleString('bn-BD') 
+                    });
+                    localStorage.setItem('fb_x9_records', JSON.stringify(local));
+                    alert("আপনার তথ্য সফলভাবে জমা হয়েছে। রিভিউ টিমের সিদ্ধান্তের জন্য অপেক্ষা করুন।");
+                    location.reload();
                 }
-            } catch (err) { alert("Error!"); }
-            finally { btn.disabled = false; btn.innerText = "রিপোর্ট সাবমিট করুন"; }
+            } catch (err) { alert("সার্ভার ত্রুটি! আবার চেষ্টা করুন।"); btn.disabled = false; btn.innerText = "সাবমিট করুন"; }
         });
     </script>
 </body>
